@@ -1,5 +1,43 @@
 # Host OrbitX on Vercel and Render
 
+## Current deployment
+
+Deployed on 2026-11-08 from commit `9b439fd`:
+
+| Resource | URL |
+| --- | --- |
+| Frontend, Vercel Hobby | https://orbitx-indol.vercel.app |
+| Demo dashboard | https://orbitx-indol.vercel.app/dashboard?demo=true |
+| Backend, Render Free | https://orbitx-new-api-q5yf.onrender.com |
+| API health | https://orbitx-new-api-q5yf.onrender.com/health |
+| Vercel project | https://vercel.com/riishs-projects-42df3a27/orbitx |
+| Render service | https://dashboard.render.com/web/srv-dbo39crm8hqs73fekrrg |
+
+The frontend's Production and Preview `NEXT_PUBLIC_API_URL` points to the
+backend above. Render permits the exact production frontend origin. Demo mode
+is enabled and provider keys are unset. Public routes, CORS, demo seeding,
+readiness and profile generation/read were verified against these URLs.
+
+Render is connected to this repository and deploys backend changes from `main`.
+Vercel was deployed by CLI from a clean archive of the pushed commit. Its
+GitHub repository link still needs to be connected in the Vercel project
+settings before pushes automatically deploy the frontend.
+
+For a manual frontend update, run these commands from the repository root
+after logging into Vercel. The Vercel project already has root directory
+`frontend`, so the deployment command must run from the repository root:
+
+```powershell
+npm.cmd exec --yes --package=vercel@65.12.1 -- vercel link --project orbitx --scope riishs-projects-42df3a27 --yes
+npm.cmd exec --yes --package=vercel@65.12.1 -- vercel deploy --prod --scope riishs-projects-42df3a27
+```
+
+Use a clean source checkout for CLI uploads. Exclude local environment files,
+runtime data, dependencies, build output and local tool folders with a
+repository-root `.vercelignore`.
+
+## Initial setup
+
 Use the private repository https://github.com/riishcodes/orbitx, branch `main`.
 Grant both hosting integrations access to that repository. Use Vercel Hobby
 for a personal demo and a Render Free Python web service for the backend.

@@ -149,9 +149,10 @@ Set `NEXT_PUBLIC_API_URL` to the actual HTTPS Render URL before building. This
 value is compiled into browser JavaScript, so changing it requires a redeploy.
 Keep tokens and API keys exclusively on Render, never in `NEXT_PUBLIC_` values.
 
-Alternatively, run `npm run deploy` from `frontend` after logging in to Vercel.
-The CLI can upload the local frontend without a Git commit, but Render deploys
-the code already published to the connected Git branch.
+For the currently deployed project, run the repository-root Vercel CLI commands
+in [DEPLOYMENT.md](DEPLOYMENT.md) after logging in. The project has root
+directory `frontend`; upload the repository root so Vercel can find it.
+Render deploys the code already published to the connected Git branch.
 
 ### Limits of this deployment
 
