@@ -1,6 +1,9 @@
 "use client"
 import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import ReactMarkdown, { type Components } from "react-markdown"
+import remarkGfm from "remark-gfm"
+import { ExternalLink, Sparkles } from "lucide-react"
 import { useChatStore } from "@/stores/chatStore"
 import { useGraphStore } from "@/stores/graphStore"
 import api from "@/lib/api"
@@ -11,6 +14,150 @@ const QUICK_PROMPTS = [
     { label: "💼 Interview prep", prompt: "Help me prepare for a tech interview. What are my strongest talking points?" },
     { label: "🗺️ Career roadmap", prompt: "Create a 3-month career acceleration plan based on my current skills and gaps." },
 ]
+
+/* ──────────────────────────────────────────
+   MARKDOWN RENDERING
+   The model answers in Markdown. Render it as a
+   structured answer instead of raw text.
+   ────────────────────────────────────────── */
+
+function AssistantAvatar() {
+    return (
+        <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-orange-500 to-amber-500 shadow-sm">
+            <Sparkles className="h-3.5 w-3.5 text-white" strokeWidth={2.5} />
+        </div>
+    )
+}
+
+function MarkdownHeading({
+    children,
+    level,
+}: {
+    children?: React.ReactNode
+    level: 1 | 2 | 3 | 4
+}) {
+    const size = level === 1 ? "text-[15px]" : level === 2 ? "text-[14px]" : "text-[13px]"
+
+    return (
+        <div className="mb-2 mt-4 flex items-start gap-2 first:mt-0">
+            <span className="mt-[5px] h-3.5 w-[3px] shrink-0 rounded-full bg-gradient-to-b from-orange-400 to-amber-500" />
+            <h3 className={`${size} font-extrabold leading-snug tracking-tight text-slate-900`}>
+                {children}
+            </h3>
+        </div>
+    )
+}
+
+const markdownComponents: Components = {
+    h1: ({ children }) => <MarkdownHeading level={1}>{children}</MarkdownHeading>,
+    h2: ({ children }) => <MarkdownHeading level={2}>{children}</MarkdownHeading>,
+    h3: ({ children }) => <MarkdownHeading level={3}>{children}</MarkdownHeading>,
+    h4: ({ children }) => <MarkdownHeading level={4}>{children}</MarkdownHeading>,
+    p: ({ children }) => (
+        <p className="mb-2.5 text-[13px] leading-[1.65] text-slate-600 last:mb-0">{children}</p>
+    ),
+    strong: ({ children }) => <strong className="font-bold text-slate-900">{children}</strong>,
+    em: ({ children }) => <em className="italic">{children}</em>,
+    ul: ({ children }) => (
+        <ul className="mb-2.5 list-disc space-y-1 pl-4 marker:text-orange-400">{children}</ul>
+    ),
+    ol: ({ children }) => (
+        <ol className="mb-2.5 list-decimal space-y-1 pl-4 marker:font-bold marker:text-orange-400">
+            {children}
+        </ol>
+    ),
+    li: ({ children }) => (
+        <li className="pl-0.5 text-[13px] leading-relaxed text-slate-600">{children}</li>
+    ),
+    a: ({ href, children }) => (
+        <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="break-words font-semibold text-orange-600 underline decoration-orange-200 underline-offset-2 transition-colors hover:text-orange-700 hover:decoration-orange-400"
+        >
+            {children}
+            <ExternalLink className="mb-0.5 ml-0.5 inline h-3 w-3" strokeWidth={2.5} />
+        </a>
+    ),
+    code: ({ className, children }) => {
+        const isBlock = typeof className === "string" && className.includes("language-")
+
+        if (isBlock) {
+            return <code className={`${className} font-mono`}>{children}</code>
+        }
+
+        return (
+            <code className="rounded-md bg-slate-200/70 px-1.5 py-0.5 font-mono text-[11.5px] font-semibold text-slate-800">
+                {children}
+            </code>
+        )
+    },
+    pre: ({ children }) => (
+        <pre className="mb-3 overflow-x-auto rounded-xl bg-slate-900 p-3 font-mono text-[11.5px] leading-relaxed text-slate-100">
+            {children}
+        </pre>
+    ),
+    blockquote: ({ children }) => (
+        <blockquote className="mb-2.5 rounded-r-lg border-l-2 border-orange-300 bg-orange-50/60 py-1.5 pl-3 text-[12.5px] italic text-slate-600">
+            {children}
+        </blockquote>
+    ),
+    hr: () => <hr className="my-3 border-slate-200" />,
+    table: ({ children }) => (
+        <div className="mb-3 overflow-x-auto rounded-xl border border-slate-200">
+            <table className="w-full border-collapse text-[12px]">{children}</table>
+        </div>
+    ),
+    thead: ({ children }) => <thead className="bg-slate-100/80">{children}</thead>,
+    th: ({ children }) => (
+        <th className="px-2.5 py-1.5 text-left font-bold text-slate-700">{children}</th>
+    ),
+    td: ({ children }) => (
+        <td className="border-t border-slate-100 px-2.5 py-1.5 text-slate-600">{children}</td>
+    ),
+}
+
+/* Pull a trailing "Confidence: 85%" line out of the answer so it can be
+   rendered as a meter rather than a sentence. The line is removed even when
+   the model adds a closing paragraph after it. */
+const CONFIDENCE_LINE =
+    /^[ \t]*(?:\*\*)?[ \t]*confidence(?:[ \t]+score)?[ \t]*(?:\*\*)?[ \t]*[:\-–—][ \t]*(?:\*\*)?[ \t]*(\d{1,3})[ \t]*%?[ \t]*(?:\*\*)?[ \t]*\.?[ \t]*$/im
+
+function splitConfidence(content: string): { body: string; confidence: number | null } {
+    const match = content.match(CONFIDENCE_LINE)
+    if (!match || match.index === undefined) return { body: content, confidence: null }
+
+    const body = `${content.slice(0, match.index)}${content.slice(match.index + match[0].length)}`
+        .replace(/\n{3,}/g, "\n\n")
+        .trim()
+
+    return {
+        body,
+        confidence: Math.max(0, Math.min(100, Number(match[1]))),
+    }
+}
+
+function ConfidenceMeter({ value }: { value: number }) {
+    return (
+        <div className="mt-3 flex items-center gap-2 border-t border-slate-200/80 pt-2.5">
+            <span className="shrink-0 text-[9.5px] font-bold uppercase tracking-[0.14em] text-slate-400">
+                Confidence
+            </span>
+            <div className="h-1 flex-1 overflow-hidden rounded-full bg-slate-200">
+                <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${value}%` }}
+                    transition={{ duration: 0.7, ease: "easeOut" }}
+                    className="h-full rounded-full bg-gradient-to-r from-orange-400 to-amber-500"
+                />
+            </div>
+            <span className="shrink-0 text-[11px] font-bold tabular-nums text-slate-700">
+                {value}%
+            </span>
+        </div>
+    )
+}
 
 export default function CopilotPanel() {
     const { messages, isLoading, addMessage, setLoading } = useChatStore()
@@ -82,7 +229,7 @@ export default function CopilotPanel() {
                         </svg>
                     </div>
                     <div>
-                        <h2 className="text-sm font-bold text-slate-900">My Orbits Copilot</h2>
+                        <h2 className="text-sm font-bold text-slate-900">OrbitX Copilot</h2>
                         <p className="text-[10px] text-slate-400 font-medium">Engine: {analysisEngine === 'openrouter' ? '✦ OpenRouter' : '◎ Ollama'} · uses your real data</p>
                     </div>
                 </div>
@@ -100,7 +247,7 @@ export default function CopilotPanel() {
                             <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-orange-100 to-amber-50 flex items-center justify-center">
                                 <span className="text-2xl">🤖</span>
                             </div>
-                            <p className="text-sm font-bold text-slate-900 mb-1">Hey! I'm your AI career coach.</p>
+                            <p className="text-sm font-bold text-slate-900 mb-1">Hey! I&apos;m your AI career coach.</p>
                             <p className="text-xs text-slate-500 leading-relaxed max-w-[260px] mx-auto">
                                 I can see your real skills from your analyzed repos. Ask me anything or try a quick prompt:
                             </p>
@@ -121,25 +268,42 @@ export default function CopilotPanel() {
                 )}
 
                 <AnimatePresence initial={false}>
-                    {messages.map((msg, i) => (
-                        <motion.div
-                            key={i}
-                            initial={{ opacity: 0, y: 8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-                            className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-                        >
-                            <div
-                                className={`max-w-[85%] rounded-2xl px-4 py-3 text-[13px] leading-relaxed ${
-                                    msg.role === "user"
-                                        ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-br-md font-medium"
-                                        : "bg-slate-50 text-slate-700 border border-slate-100 rounded-bl-md font-medium"
-                                }`}
+                    {messages.map((msg, i) => {
+                        const isUser = msg.role === "user"
+                        const { body, confidence } = isUser
+                            ? { body: msg.content, confidence: null }
+                            : splitConfidence(msg.content)
+
+                        return (
+                            <motion.div
+                                key={i}
+                                initial={{ opacity: 0, y: 8 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                                className={`flex gap-2.5 ${isUser ? "justify-end" : "justify-start"}`}
                             >
-                                <div className="whitespace-pre-wrap">{msg.content}</div>
-                            </div>
-                        </motion.div>
-                    ))}
+                                {!isUser && <AssistantAvatar />}
+
+                                {isUser ? (
+                                    <div className="max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-br-md bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-3 text-[13px] font-medium leading-relaxed text-white">
+                                        {body}
+                                    </div>
+                                ) : (
+                                    <div className="min-w-0 flex-1 rounded-2xl rounded-bl-md border border-slate-200/80 bg-[#FAFAFB] px-4 py-3.5">
+                                        {body.trim() && (
+                                            <ReactMarkdown
+                                                remarkPlugins={[remarkGfm]}
+                                                components={markdownComponents}
+                                            >
+                                                {body}
+                                            </ReactMarkdown>
+                                        )}
+                                        {confidence !== null && <ConfidenceMeter value={confidence} />}
+                                    </div>
+                                )}
+                            </motion.div>
+                        )
+                    })}
                 </AnimatePresence>
 
                 {/* Typing indicator */}
@@ -147,9 +311,10 @@ export default function CopilotPanel() {
                     <motion.div
                         initial={{ opacity: 0, y: 8 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="flex justify-start"
+                        className="flex justify-start gap-2.5"
                     >
-                        <div className="bg-slate-50 border border-slate-100 rounded-2xl rounded-bl-md px-4 py-3 flex items-center gap-1.5">
+                        <AssistantAvatar />
+                        <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-md border border-slate-200/80 bg-[#FAFAFB] px-4 py-3">
                             <div className="flex gap-1">
                                 <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
                                 <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />

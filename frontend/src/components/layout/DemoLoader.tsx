@@ -12,27 +12,27 @@ import { GeistMono } from "geist/font/mono"
 const STAGES = [
     {
         title: "Connecting to GitHub",
-        detail: "Authenticating and locating 4 public repositories",
+        detail: "Locating github.com/riishcodes/Myorbits",
         duration: 2200,
     },
     {
-        title: "Scanning repositories",
-        detail: "Reading languages, dependency files and READMEs",
+        title: "Scanning the repository",
+        detail: "Reading languages, package.json and the README",
         duration: 2600,
     },
     {
         title: "Extracting technologies",
-        detail: "Cross-checking 17 skills against the tech directory",
+        detail: "Cross-checking 23 skills against the tech directory",
         duration: 2400,
     },
     {
         title: "Scoring market demand",
-        detail: "Comparing against live role requirements",
+        detail: "Comparing against current role requirements",
         duration: 2400,
     },
     {
         title: "Building your knowledge graph",
-        detail: "Laying out 21 nodes and 36 connections in 3D",
+        detail: "Laying out 24 nodes and 50 connections in 3D",
         duration: 2400,
     },
 ] as const
@@ -181,7 +181,7 @@ export default function DemoLoader({ onComplete }: { onComplete: () => void }) {
                                     className="text-[17px] font-bold tracking-tight"
                                     style={{ fontFamily: "var(--font-pixel), monospace", color: "#F97316" }}
                                 >
-                                    My Orbits
+                                    OrbitX
                                 </span>
                             </div>
                             <span
@@ -202,7 +202,7 @@ export default function DemoLoader({ onComplete }: { onComplete: () => void }) {
                             id="demo-loader-subtitle"
                             className="mt-2 text-[13.5px] font-medium leading-relaxed text-slate-500"
                         >
-                            Analyzing a sample developer profile — no signup required.
+                            Analyzing github.com/riishcodes/Myorbits — no signup required.
                         </p>
 
                         {/* ── Stages ── */}

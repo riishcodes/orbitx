@@ -107,3 +107,58 @@ Do not explain the app first. Watch where they hesitate; that is the real feedba
 - Copilot answer with the engine footer visible
 
 Put them in `docs/screenshots/` and link them from `SUBMISSION.md`.
+
+## 7. Free hosting: Vercel and Render
+
+Follow [DEPLOYMENT.md](DEPLOYMENT.md) for the dashboard steps in deployment order.
+
+Use Vercel Hobby for the Next.js frontend and a Render Free web service for
+FastAPI. No Cloudflare service or Neo4j database is required for this setup.
+Only publish code that has been reviewed for secrets; never commit `.env` files.
+
+### Render backend
+
+Connect this GitHub repository and create the service from `render.yaml`, or
+create a Python web service with these settings:
+
+| Setting | Value |
+| --- | --- |
+| Root directory | `backend` |
+| Instance type | Free |
+| Build command | `pip install -r requirements.txt` |
+| Start command | `python -m uvicorn main:app --host 0.0.0.0 --port $PORT --workers 1` |
+| Health check | `/health` |
+| `PYTHON_VERSION` | `3.12.10` |
+| `DEMO_MODE` | `true` |
+| `AI_PROVIDER` | `openrouter` |
+| `NEO4J_URI` | Leave empty |
+| `JWT_SECRET` | A generated random secret; the Blueprint generates this |
+| `CORS_ORIGINS` | The exact Vercel frontend origin, such as `https://your-project.vercel.app` |
+
+Use one worker because graph data is currently process-local. Check the actual
+Render URL at `/health` before connecting the frontend. Do not assume a service
+name is available or hard-code a URL before Render creates it.
+
+### Vercel frontend
+
+Import the same repository, set the root directory to `frontend`, and use the
+Next.js framework preset. Leave the output directory at its framework default.
+The build command is `npm run build`; no static-export adapter is needed.
+
+Set `NEXT_PUBLIC_API_URL` to the actual HTTPS Render URL before building. This
+value is compiled into browser JavaScript, so changing it requires a redeploy.
+Keep tokens and API keys exclusively on Render, never in `NEXT_PUBLIC_` values.
+
+Alternatively, run `npm run deploy` from `frontend` after logging in to Vercel.
+The CLI can upload the local frontend without a Git commit, but Render deploys
+the code already published to the connected Git branch.
+
+### Limits of this deployment
+
+- Render Free sleeps after 15 minutes without traffic; the next request can take about a minute.
+- Graph data and certifications are in memory, and saved profiles are on ephemeral disk. They can disappear after a restart, redeploy, or sleep.
+- This is a shared demo, not a secure multi-user service. Authentication and per-user data isolation still need implementation.
+- `DEMO_MODE=true` disables GitHub OAuth and uses deterministic skill extraction, gap explanations and roadmaps. Public-repository analysis still fetches GitHub data; the bundled demo graph is offline. Chat and what-if can still call a configured provider, so leave provider keys unset for this public demo.
+- Before enabling hosted AI, implement authorization, rate limits and consistent demo-mode handling. Then set `DEMO_MODE=false` and add `OPENROUTER_API_KEY` as a Render secret. Provider quotas and costs are separate from hosting.
+- Local Ollama is not reachable from Render. Use hosted inference rather than a model running on your laptop.
+- Vercel Hobby is for personal, non-commercial projects and is subject to usage limits.

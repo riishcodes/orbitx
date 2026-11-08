@@ -34,7 +34,7 @@ export default function RecruiterCard() {
         try {
             const username = user?.username || "developer"
             const res = await api.post("/profile/generate", { username })
-            const profileUrl = `${window.location.origin}/profile/${res.data.slug}`
+            const profileUrl = `${window.location.origin}/profile?slug=${encodeURIComponent(res.data.slug)}`
             await copyToClipboard(profileUrl)
             setShareStatus("copied")
             setTimeout(() => setShareStatus("idle"), 3000)
@@ -381,7 +381,7 @@ function buildPDFHeader(meta: { name: string; username: string; targetRole: stri
         "border-bottom:2px solid #F97316;padding-bottom:14px;margin-bottom:22px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;"
 
     const eyebrow = document.createElement("div")
-    eyebrow.textContent = "My Orbits — Recruiter Profile"
+    eyebrow.textContent = "OrbitX — Recruiter Profile"
     eyebrow.style.cssText =
         "font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#F97316;"
 
@@ -582,15 +582,15 @@ async function exportPDF(meta: { name: string; username: string; targetRole: str
             pdf.setFontSize(8)
             pdf.setTextColor(100, 116, 139) // slate-500
             if (i > 1) {
-                pdf.text("My Orbits · Recruiter Profile — continued", margin, 6)
+                pdf.text("OrbitX · Recruiter Profile — continued", margin, 6)
             }
-            pdf.text("My Orbits · Recruiter Profile", margin, footerY)
+            pdf.text("OrbitX · Recruiter Profile", margin, footerY)
             pdf.text(`Page ${i} of ${pageCount}`, pageWidth - margin, footerY, {
                 align: "right",
             })
         }
 
-        pdf.save("MyOrbits-Recruiter-Profile.pdf")
+        pdf.save("OrbitX-Recruiter-Profile.pdf")
     } finally {
         container.remove()
     }

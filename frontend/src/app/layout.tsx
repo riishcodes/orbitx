@@ -19,9 +19,9 @@ const pixelify = Pixelify_Sans({
 })
 
 export const metadata: Metadata = {
-    title: 'My Orbits — Find Your Path in Tech',
+    title: 'OrbitX — Find Your Path in Tech',
     description: 'Built for beginner students who are tired of guessing. Paste a GitHub repo and see what each technology is for, what you actually know, and what to learn next — as an interactive 3D skill map.',
-    applicationName: 'My Orbits',
+    applicationName: 'OrbitX',
     icons: {
         icon: '/favicon.svg',
         apple: '/favicon.svg',

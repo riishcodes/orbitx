@@ -52,7 +52,7 @@ export const useGraphStore = create<GraphState>((set) => ({
     showInsights: true,
     copilotMode: false,
     roadmapMode: false,
-    analysisEngine: 'ollama',
+    analysisEngine: 'openrouter',
     setGraphData: (data) => set({ graphData: data }),
     setSelectedNode: (node) => set({ selectedNode: node }),
     setSearchTerm: (term) => set({ searchTerm: term }),

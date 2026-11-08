@@ -1,7 +1,8 @@
 "use client"
-import { useEffect, useState } from "react"
-import { useParams } from "next/navigation"
+import { Suspense, useEffect, useState } from "react"
+import { useSearchParams } from "next/navigation"
 import { motion } from "framer-motion"
+import api from "@/lib/api"
 
 const CATEGORY_COLORS: Record<string, string> = {
     frontend:  "#F97316",
@@ -35,23 +36,28 @@ interface ProfileData {
     generated_at: number
 }
 
-export default function PublicProfilePage() {
-    const params = useParams()
-    const slug = params?.slug as string
+function PublicProfileContent() {
+    const slug = useSearchParams().get("slug")
     const [profile, setProfile] = useState<ProfileData | null>(null)
     const [error, setError] = useState(false)
     const [copied, setCopied] = useState(false)
 
     useEffect(() => {
-        if (!slug) return
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
-        fetch(`${apiUrl}/profile/${slug}`)
-            .then(r => {
-                if (!r.ok) throw new Error("Not found")
-                return r.json()
+        if (!slug) {
+            setError(true)
+            return
+        }
+        let cancelled = false
+        setProfile(null)
+        setError(false)
+        api.get<ProfileData>(`/profile/${encodeURIComponent(slug)}`)
+            .then(({ data }) => {
+                if (!cancelled) setProfile(data)
             })
-            .then(setProfile)
-            .catch(() => setError(true))
+            .catch(() => {
+                if (!cancelled) setError(true)
+            })
+        return () => { cancelled = true }
     }, [slug])
 
     const handleCopyLink = () => {
@@ -62,7 +68,7 @@ export default function PublicProfilePage() {
 
     const handleShareLinkedIn = () => {
         const url = encodeURIComponent(window.location.href)
-        const text = encodeURIComponent(`Check out my developer skill profile — built from real GitHub code analysis with My Orbits AI 🚀`)
+        const text = encodeURIComponent(`Check out my developer skill profile — built from real GitHub code analysis with OrbitX AI 🚀`)
         window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}&summary=${text}`, "_blank")
     }
 
@@ -72,7 +78,7 @@ export default function PublicProfilePage() {
                 <div className="text-center max-w-sm px-6">
                     <div className="text-5xl mb-4">🔭</div>
                     <h1 className="text-xl font-bold text-slate-900 mb-2">Profile Not Found</h1>
-                    <p className="text-sm text-slate-500 mb-6">This profile link may have expired or doesn't exist.</p>
+                    <p className="text-sm text-slate-500 mb-6">This profile link may have expired or does not exist.</p>
                     <a href="/" className="inline-block px-6 py-3 bg-[#F97316] text-white font-bold rounded-xl text-sm hover:bg-orange-600 transition-colors">
                         Analyze your GitHub →
                     </a>
@@ -97,7 +103,7 @@ export default function PublicProfilePage() {
         <div className="min-h-screen bg-[#FCFCFD] font-sans">
             {/* Nav */}
             <nav className="fixed top-0 inset-x-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/50 px-6 py-4 flex items-center justify-between">
-                <a href="/" className="text-sm sm:text-2xl font-bold text-[#F97316] font-pixel tracking-wider">My Orbits</a>
+                <a href="/" className="text-sm sm:text-2xl font-bold text-[#F97316] font-pixel tracking-wider">OrbitX</a>
                 <span className="text-xs text-slate-400 font-medium hidden sm:block">AI-powered developer career intelligence</span>
                 <a href="/" className="px-4 py-2 bg-[#F97316] text-white text-xs font-bold rounded-xl hover:bg-orange-600 transition-colors">
                     Analyze your repos →
@@ -238,7 +244,7 @@ export default function PublicProfilePage() {
                     <div>
                         <div className="flex items-center gap-2 mb-1">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
-                            <p className="text-sm font-bold text-slate-900">Verified by My Orbits</p>
+                            <p className="text-sm font-bold text-slate-900">Verified by OrbitX</p>
                         </div>
                         <p className="text-xs text-slate-500">Skills extracted from real GitHub code — not self-reported</p>
                         <p className="text-[10px] text-slate-400 mt-1">
@@ -275,5 +281,17 @@ export default function PublicProfilePage() {
                 </motion.div>
             </div>
         </div>
+    )
+}
+
+export default function PublicProfilePage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-[#FCFCFD] flex items-center justify-center">
+                <div className="w-8 h-8 border-2 border-[#F97316] border-t-transparent rounded-full animate-spin" />
+            </div>
+        }>
+            <PublicProfileContent />
+        </Suspense>
     )
 }

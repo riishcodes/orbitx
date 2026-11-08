@@ -16,8 +16,13 @@ GITHUB_USER_URL = "https://api.github.com/user"
 @router.post("/github", response_model=TokenResponse)
 async def github_login(payload: GitHubLoginRequest):
     """Exchange GitHub OAuth code for access token and return JWT."""
+    if settings.demo_mode:
+        raise HTTPException(status_code=503, detail="GitHub sign-in is disabled in demo mode.")
+    if not settings.github_client_id or not settings.github_client_secret:
+        raise HTTPException(status_code=503, detail="GitHub sign-in is not configured.")
+    if settings.jwt_secret in ("changeme", "your-secret-here", ""):
+        raise HTTPException(status_code=503, detail="GitHub sign-in requires a secure JWT_SECRET.")
     # Exchange code for GitHub access token
-    print(f"DEBUG: exchanging code {payload.code} with ID {settings.github_client_id}...")
     async with httpx.AsyncClient() as client:
         res = await client.post(
             GITHUB_TOKEN_URL,
@@ -30,10 +35,8 @@ async def github_login(payload: GitHubLoginRequest):
         )
 
     token_data = res.json()
-    print(f"DEBUG: GitHub response: {token_data}")
     gh_token = token_data.get("access_token")
     if not gh_token:
-        print(f"ERROR: No access_token found in {token_data}")
         raise HTTPException(status_code=400, detail=f"GitHub Error: {token_data.get('error_description', 'Unknown error')}")
 
     # Fetch user profile

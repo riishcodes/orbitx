@@ -44,7 +44,7 @@ export default function Topbar() {
                         onClick={() => router.push("/")}
                         className="flex items-center gap-3 hover:opacity-80 transition-opacity"
                     >
-                        <span className="text-[15px] md:text-[19px] font-bold text-[#F97316] block leading-none font-pixel tracking-wider">My Orbits</span>
+                        <span className="text-[15px] md:text-[19px] font-bold text-[#F97316] block leading-none font-pixel tracking-wider">OrbitX</span>
                     </button>
                 </div>
 
@@ -109,7 +109,7 @@ export default function Topbar() {
                         <div className="absolute right-0 top-full mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                             <div className="px-4 py-3 border-b border-slate-100 bg-slate-50/50">
                                 <p className="text-xs font-bold text-slate-900">{displayName}</p>
-                                <p className="text-[10px] text-slate-400 font-medium mt-0.5">{displayRole} · My Orbits</p>
+                                <p className="text-[10px] text-slate-400 font-medium mt-0.5">{displayRole} · OrbitX</p>
                             </div>
                             <div className="py-1">
                                 <DropdownItem icon="home" label="Back to Home" onClick={() => { setProfileOpen(false); router.push("/") }} />
@@ -153,7 +153,7 @@ export default function Topbar() {
                                 </div>
                                 <div>
                                     <p className="text-sm font-bold text-slate-900">{displayName}</p>
-                                    <p className="text-[11px] text-slate-400 font-medium">{displayRole} · My Orbits</p>
+                                    <p className="text-[11px] text-slate-400 font-medium">{displayRole} · OrbitX</p>
                                 </div>
                             </div>
 

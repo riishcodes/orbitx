@@ -10,12 +10,18 @@ __pycache__/
 .env.local
 .env.*.local
 backend/.env
+.dev.vars
+.dev.vars.*
+.env.production
+.env.preview
 
 # Build output
 .next/
 out/
 dist/
 build/
+.wrangler/
+.vercel/
 
 # IDE
 .vscode/

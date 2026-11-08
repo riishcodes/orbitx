@@ -1,50 +1,31 @@
 # Carefully designed demo story — not random data.
-# Aryan is strong in frontend, weak in ML — gap is visually obvious in the graph.
-# Adding PyTorch in What-If jumps readiness 58% → 74%.
+# The demo graph mirrors a real analysis of github.com/riishcodes/Myorbits:
+# a Next.js + FastAPI career-intelligence app. The student is solid on the
+# JavaScript/TypeScript frontend and Python backend, but has never shipped
+# Node.js or SQL — so those gaps are visible in the graph and the roadmap.
 
 DEMO_USER = {
     "name": "Aryan Sharma",
-    "username": "aryan-dev",
-    "target_role": "ML Engineer",
-    "career_readiness": 58.0,
-    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=aryan",
+    "username": "demo-user",
+    "target_role": "Full Stack Developer",
+    "career_readiness": 67.9,
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=demo",
 }
 
 DEMO_REPOS = [
     {
-        "name": "orbit-dashboard",
-        "languages": ["TypeScript", "JavaScript", "CSS"],
-        "commits": 68,
-        "stars": 24,
-        "description": "Full-stack career dashboard built with React, Next.js and Tailwind",
-    },
-    {
-        "name": "studyhub-api",
-        "languages": ["JavaScript", "Node.js", "MongoDB"],
-        "commits": 41,
-        "stars": 14,
-        "description": "REST API for a student study-group app with Express, JWT and MongoDB",
-    },
-    {
-        "name": "digit-lab",
-        "languages": ["Python", "Jupyter Notebook"],
-        "commits": 19,
-        "stars": 7,
-        "description": "Image-classification experiments with NumPy and Jupyter notebooks",
-    },
-    {
-        "name": "fastapi-notes",
-        "languages": ["Python"],
-        "commits": 26,
-        "stars": 11,
-        "description": "Notes API with FastAPI, SQLAlchemy and JWT authentication",
+        "name": "Myorbits",
+        "languages": ["TypeScript", "Python", "CSS", "JavaScript"],
+        "commits": 1,
+        "stars": 0,
+        "description": "Career-intelligence app that turns GitHub projects into a 3D skill graph, gap analysis and learning roadmap",
     },
 ]
 
 DEMO_NOTION_PAGES = [
     {
-        "title": "ML Learning Roadmap",
-        "text": "Studying neural networks, backpropagation, PyTorch basics",
+        "title": "Full Stack Roadmap",
+        "text": "Studying Node.js, SQL, Docker, system design and API design",
     },
     {
         "title": "System Design Notes",
@@ -57,74 +38,96 @@ DEMO_CERTIFICATIONS = [
 ]
 
 DEMO_NODES = [
-    {"id": "react",      "name": "React",         "category": "frontend", "maturity": 87, "market_demand": 92, "val": 8.7, "source": "github"},
-    {"id": "javascript", "name": "JavaScript",    "category": "frontend", "maturity": 82, "market_demand": 88, "val": 8.2, "source": "github"},
-    {"id": "css",        "name": "CSS",            "category": "frontend", "maturity": 74, "market_demand": 70, "val": 7.4, "source": "github"},
-    {"id": "html",       "name": "HTML",           "category": "frontend", "maturity": 70, "market_demand": 65, "val": 7.0, "source": "github"},
-    {"id": "nodejs",     "name": "Node.js",        "category": "backend",  "maturity": 61, "market_demand": 80, "val": 6.1, "source": "github"},
-    {"id": "express",    "name": "Express",        "category": "backend",  "maturity": 58, "market_demand": 72, "val": 5.8, "source": "github"},
-    {"id": "python",     "name": "Python",         "category": "backend",  "maturity": 61, "market_demand": 95, "val": 6.1, "source": "github"},
-    {"id": "fastapi",    "name": "FastAPI",        "category": "backend",  "maturity": 54, "market_demand": 78, "val": 5.4, "source": "github"},
-    {"id": "mongodb",    "name": "MongoDB",        "category": "database", "maturity": 45, "market_demand": 74, "val": 4.5, "source": "github"},
-    {"id": "numpy",      "name": "NumPy",          "category": "ml",       "maturity": 34, "market_demand": 85, "val": 3.4, "source": "github"},
-    {"id": "jupyter",    "name": "Jupyter",        "category": "ml",       "maturity": 30, "market_demand": 72, "val": 3.0, "source": "github"},
-    {"id": "typescript", "name": "TypeScript",     "category": "frontend", "maturity": 64, "market_demand": 90, "val": 6.4, "source": "github"},
-    {"id": "nextjs",     "name": "Next.js",        "category": "frontend", "maturity": 60, "market_demand": 86, "val": 6.0, "source": "github"},
-    {"id": "git",        "name": "Git",            "category": "devops",   "maturity": 78, "market_demand": 90, "val": 7.8, "source": "github"},
-    {"id": "ml-roadmap", "name": "ML Roadmap",     "category": "concept",  "maturity": 40, "market_demand": 60, "val": 4.0, "source": "notion"},
-    {"id": "sys-design", "name": "System Design",  "category": "concept",  "maturity": 35, "market_demand": 88, "val": 3.5, "source": "notion"},
-    {"id": "meta-cert",  "name": "Meta Frontend",  "category": "cert",     "maturity": 100, "market_demand": 85, "val": 10.0, "source": "cert"},
-    {"id": "repo:orbit-dashboard", "name": "orbit-dashboard", "category": "repo", "maturity": 74, "market_demand": 78, "val": 7.4, "source": "github"},
-    {"id": "repo:studyhub-api", "name": "studyhub-api", "category": "repo", "maturity": 62, "market_demand": 70, "val": 6.2, "source": "github"},
-    {"id": "repo:digit-lab", "name": "digit-lab", "category": "repo", "maturity": 38, "market_demand": 64, "val": 5.0, "source": "github"},
-    {"id": "repo:fastapi-notes", "name": "fastapi-notes", "category": "repo", "maturity": 56, "market_demand": 70, "val": 5.6, "source": "github"},
+    # The single real repository. It anchors the graph as a hub.
+    {"id": "repo:Myorbits", "name": "Myorbits", "category": "repo", "maturity": 62, "market_demand": 60, "val": 6.2, "source": "github"},
+
+    # Languages and frameworks found in the repo
+    {"id": "typescript",     "name": "TypeScript",      "category": "frontend", "maturity": 82, "market_demand": 90, "val": 8.2, "source": "github"},
+    {"id": "javascript",     "name": "JavaScript",      "category": "frontend", "maturity": 58, "market_demand": 93, "val": 5.8, "source": "github"},
+    {"id": "python",         "name": "Python",          "category": "backend",  "maturity": 68, "market_demand": 95, "val": 6.8, "source": "github"},
+    {"id": "css",            "name": "CSS",             "category": "frontend", "maturity": 64, "market_demand": 72, "val": 6.4, "source": "github"},
+    {"id": "react",          "name": "React",           "category": "frontend", "maturity": 80, "market_demand": 95, "val": 8.0, "source": "github"},
+    {"id": "nextjs",         "name": "Next.js",         "category": "frontend", "maturity": 76, "market_demand": 92, "val": 7.6, "source": "github"},
+    {"id": "tailwind-css",   "name": "Tailwind CSS",    "category": "frontend", "maturity": 71, "market_demand": 88, "val": 7.1, "source": "github"},
+    {"id": "framer-motion",  "name": "Framer Motion",   "category": "frontend", "maturity": 55, "market_demand": 68, "val": 5.5, "source": "github"},
+    {"id": "zustand",        "name": "Zustand",         "category": "frontend", "maturity": 52, "market_demand": 72, "val": 5.2, "source": "github"},
+    {"id": "recharts",       "name": "Recharts",        "category": "frontend", "maturity": 46, "market_demand": 52, "val": 4.6, "source": "github"},
+    {"id": "threejs",        "name": "Three.js",        "category": "frontend", "maturity": 48, "market_demand": 60, "val": 4.8, "source": "github"},
+    {"id": "axios",          "name": "Axios",           "category": "frontend", "maturity": 45, "market_demand": 60, "val": 4.5, "source": "github"},
+    {"id": "fastapi",        "name": "FastAPI",         "category": "backend",  "maturity": 72, "market_demand": 85, "val": 7.2, "source": "github"},
+    {"id": "rest-api",       "name": "REST API",        "category": "backend",  "maturity": 66, "market_demand": 85, "val": 6.6, "source": "github"},
+    {"id": "neo4j",          "name": "Neo4j",           "category": "database", "maturity": 50, "market_demand": 55, "val": 5.0, "source": "github"},
+    {"id": "github",         "name": "GitHub",          "category": "devops",   "maturity": 74, "market_demand": 85, "val": 7.4, "source": "github"},
+    {"id": "git",            "name": "Git",             "category": "devops",   "maturity": 72, "market_demand": 90, "val": 7.2, "source": "github"},
+    {"id": "linux",          "name": "Linux",           "category": "devops",   "maturity": 45, "market_demand": 85, "val": 4.5, "source": "github"},
+
+    # Concepts explained in the repo's README
+    {"id": "ai",                        "name": "AI",                        "category": "concept", "maturity": 40, "market_demand": 60, "val": 4.0, "source": "github"},
+    {"id": "3d-knowledge-graph",        "name": "3D Knowledge Graph",        "category": "concept", "maturity": 58, "market_demand": 60, "val": 5.8, "source": "github"},
+    {"id": "interactive-visualization", "name": "Interactive Visualization",  "category": "concept", "maturity": 60, "market_demand": 60, "val": 6.0, "source": "github"},
+    {"id": "skill-gap-analysis",        "name": "Skill Gap Analysis",        "category": "concept", "maturity": 44, "market_demand": 60, "val": 4.4, "source": "github"},
+    {"id": "career-readiness-score",    "name": "Career Readiness Score",    "category": "concept", "maturity": 42, "market_demand": 60, "val": 4.2, "source": "github"},
 ]
 
 DEMO_LINKS = [
-    {"source": "react",      "target": "javascript", "type": "RELATED_TO", "strength": 0.95},
-    {"source": "react",      "target": "css",        "type": "RELATED_TO", "strength": 0.80},
-    {"source": "react",      "target": "html",       "type": "RELATED_TO", "strength": 0.75},
-    {"source": "javascript", "target": "nodejs",     "type": "RELATED_TO", "strength": 0.80},
-    {"source": "nodejs",     "target": "express",    "type": "RELATED_TO", "strength": 0.90},
-    {"source": "express",    "target": "mongodb",    "type": "RELATED_TO", "strength": 0.70},
-    {"source": "python",     "target": "numpy",      "type": "RELATED_TO", "strength": 0.85},
-    {"source": "python",     "target": "fastapi",    "type": "RELATED_TO", "strength": 0.75},
-    {"source": "python",     "target": "jupyter",    "type": "RELATED_TO", "strength": 0.70},
-    {"source": "numpy",      "target": "jupyter",    "type": "RELATED_TO", "strength": 0.65},
-    {"source": "ml-roadmap", "target": "numpy",      "type": "MENTIONS",   "strength": 0.60},
-    {"source": "ml-roadmap", "target": "python",     "type": "MENTIONS",   "strength": 0.55},
-    {"source": "sys-design", "target": "nodejs",     "type": "MENTIONS",   "strength": 0.50},
-    {"source": "sys-design", "target": "mongodb",    "type": "MENTIONS",   "strength": 0.45},
-    {"source": "meta-cert",  "target": "react",      "type": "VALIDATES",  "strength": 0.90},
-    {"source": "meta-cert",  "target": "javascript", "type": "VALIDATES",  "strength": 0.85},
-    {"source": "meta-cert",  "target": "css",        "type": "VALIDATES",  "strength": 0.80},
-    {"source": "git",        "target": "nodejs",     "type": "RELATED_TO", "strength": 0.40},
-    {"source": "git",        "target": "python",     "type": "RELATED_TO", "strength": 0.40},
-    {"source": "nextjs",     "target": "react",      "type": "RELATED_TO", "strength": 0.90},
-    {"source": "nextjs",     "target": "typescript", "type": "RELATED_TO", "strength": 0.80},
-    {"source": "typescript", "target": "javascript", "type": "RELATED_TO", "strength": 0.90},
-    {"source": "repo:orbit-dashboard", "target": "javascript", "type": "WRITTEN_IN", "strength": 0.95},
-    {"source": "repo:orbit-dashboard", "target": "typescript", "type": "WRITTEN_IN", "strength": 0.95},
-    {"source": "repo:orbit-dashboard", "target": "react",      "type": "WRITTEN_IN", "strength": 0.90},
-    {"source": "repo:orbit-dashboard", "target": "nextjs",     "type": "WRITTEN_IN", "strength": 0.90},
-    {"source": "repo:orbit-dashboard", "target": "css",        "type": "WRITTEN_IN", "strength": 0.85},
-    {"source": "repo:studyhub-api", "target": "javascript", "type": "WRITTEN_IN", "strength": 0.95},
-    {"source": "repo:studyhub-api", "target": "nodejs",     "type": "WRITTEN_IN", "strength": 0.90},
-    {"source": "repo:studyhub-api", "target": "express",    "type": "WRITTEN_IN", "strength": 0.85},
-    {"source": "repo:studyhub-api", "target": "mongodb",    "type": "WRITTEN_IN", "strength": 0.80},
-    {"source": "repo:digit-lab", "target": "python",  "type": "WRITTEN_IN", "strength": 0.95},
-    {"source": "repo:digit-lab", "target": "jupyter", "type": "WRITTEN_IN", "strength": 0.90},
-    {"source": "repo:digit-lab", "target": "numpy",   "type": "WRITTEN_IN", "strength": 0.80},
-    {"source": "repo:fastapi-notes", "target": "python",  "type": "WRITTEN_IN", "strength": 0.95},
-    {"source": "repo:fastapi-notes", "target": "fastapi", "type": "WRITTEN_IN", "strength": 0.90},
+    # Repo → technology (one link per skill, no duplicates)
+    {"source": "repo:Myorbits", "target": "typescript",     "type": "WRITTEN_IN", "strength": 0.95},
+    {"source": "repo:Myorbits", "target": "javascript",     "type": "WRITTEN_IN", "strength": 0.85},
+    {"source": "repo:Myorbits", "target": "python",         "type": "WRITTEN_IN", "strength": 0.90},
+    {"source": "repo:Myorbits", "target": "css",            "type": "WRITTEN_IN", "strength": 0.85},
+    {"source": "repo:Myorbits", "target": "react",          "type": "DEPENDS_ON", "strength": 0.90},
+    {"source": "repo:Myorbits", "target": "nextjs",         "type": "DEPENDS_ON", "strength": 0.90},
+    {"source": "repo:Myorbits", "target": "tailwind-css",   "type": "DEPENDS_ON", "strength": 0.90},
+    {"source": "repo:Myorbits", "target": "framer-motion",  "type": "DEPENDS_ON", "strength": 0.85},
+    {"source": "repo:Myorbits", "target": "zustand",        "type": "DEPENDS_ON", "strength": 0.85},
+    {"source": "repo:Myorbits", "target": "recharts",       "type": "DEPENDS_ON", "strength": 0.85},
+    {"source": "repo:Myorbits", "target": "threejs",        "type": "DEPENDS_ON", "strength": 0.85},
+    {"source": "repo:Myorbits", "target": "axios",          "type": "DEPENDS_ON", "strength": 0.85},
+    {"source": "repo:Myorbits", "target": "fastapi",        "type": "DEPENDS_ON", "strength": 0.90},
+    {"source": "repo:Myorbits", "target": "rest-api",       "type": "DEPENDS_ON", "strength": 0.85},
+    {"source": "repo:Myorbits", "target": "neo4j",          "type": "USES", "strength": 0.70},
+    {"source": "repo:Myorbits", "target": "github",         "type": "USES", "strength": 0.70},
+    {"source": "repo:Myorbits", "target": "git",            "type": "USES", "strength": 0.70},
+    {"source": "repo:Myorbits", "target": "linux",          "type": "USES", "strength": 0.70},
+    {"source": "repo:Myorbits", "target": "ai",             "type": "USES", "strength": 0.65},
+    {"source": "repo:Myorbits", "target": "3d-knowledge-graph",        "type": "USES", "strength": 0.70},
+    {"source": "repo:Myorbits", "target": "interactive-visualization", "type": "USES", "strength": 0.70},
+    {"source": "repo:Myorbits", "target": "skill-gap-analysis",        "type": "USES", "strength": 0.70},
+    {"source": "repo:Myorbits", "target": "career-readiness-score",    "type": "USES", "strength": 0.70},
+
+    # Skill ↔ skill relations so the graph has a shape, not just spokes
+    {"source": "react",          "target": "javascript",     "type": "RELATED_TO", "strength": 0.90},
+    {"source": "react",          "target": "css",            "type": "RELATED_TO", "strength": 0.80},
+    {"source": "react",          "target": "typescript",     "type": "RELATED_TO", "strength": 0.85},
+    {"source": "react",          "target": "nextjs",         "type": "RELATED_TO", "strength": 0.90},
+    {"source": "react",          "target": "tailwind-css",   "type": "RELATED_TO", "strength": 0.80},
+    {"source": "react",          "target": "framer-motion",  "type": "RELATED_TO", "strength": 0.75},
+    {"source": "react",          "target": "zustand",        "type": "RELATED_TO", "strength": 0.80},
+    {"source": "react",          "target": "threejs",        "type": "RELATED_TO", "strength": 0.70},
+    {"source": "react",          "target": "recharts",       "type": "RELATED_TO", "strength": 0.70},
+    {"source": "nextjs",         "target": "typescript",     "type": "RELATED_TO", "strength": 0.85},
+    {"source": "nextjs",         "target": "javascript",     "type": "RELATED_TO", "strength": 0.80},
+    {"source": "typescript",     "target": "javascript",     "type": "RELATED_TO", "strength": 0.90},
+    {"source": "tailwind-css",   "target": "css",            "type": "RELATED_TO", "strength": 0.90},
+    {"source": "fastapi",        "target": "python",         "type": "RELATED_TO", "strength": 0.90},
+    {"source": "fastapi",        "target": "rest-api",       "type": "RELATED_TO", "strength": 0.85},
+    {"source": "rest-api",       "target": "python",         "type": "RELATED_TO", "strength": 0.70},
+    {"source": "axios",          "target": "rest-api",       "type": "RELATED_TO", "strength": 0.85},
+    {"source": "neo4j",          "target": "python",         "type": "RELATED_TO", "strength": 0.60},
+    {"source": "github",         "target": "git",            "type": "RELATED_TO", "strength": 0.90},
+    {"source": "github",         "target": "linux",          "type": "RELATED_TO", "strength": 0.60},
+    {"source": "ai",             "target": "python",         "type": "RELATED_TO", "strength": 0.60},
+    {"source": "skill-gap-analysis",        "target": "ai",                          "type": "RELATED_TO", "strength": 0.70},
+    {"source": "career-readiness-score",    "target": "skill-gap-analysis",          "type": "RELATED_TO", "strength": 0.80},
+    {"source": "3d-knowledge-graph",        "target": "threejs",                     "type": "RELATED_TO", "strength": 0.80},
+    {"source": "3d-knowledge-graph",        "target": "interactive-visualization",   "type": "RELATED_TO", "strength": 0.75},
+    {"source": "interactive-visualization", "target": "threejs",                     "type": "RELATED_TO", "strength": 0.70},
+    {"source": "recharts",       "target": "javascript",     "type": "RELATED_TO", "strength": 0.60},
 ]
 
 DEMO_GAPS = [
-    {"skill": "PyTorch",       "priority": 0.94, "reason": "Core framework for ML Engineer role — essential for deep learning models"},
-    {"skill": "scikit-learn",  "priority": 0.88, "reason": "Essential for classical ML workflows — regression, classification, clustering"},
-    {"skill": "Docker",        "priority": 0.72, "reason": "Required for production ML deployment and containerized workflows"},
-    {"skill": "TensorFlow",    "priority": 0.68, "reason": "Widely used in industry for production ML systems"},
-    {"skill": "SQL",           "priority": 0.55, "reason": "Data querying is fundamental for any data-heavy ML role"},
+    {"skill": "SQL",     "priority": 0.90, "reason": "Full-stack roles expect you to query a relational database; Myorbits currently only stores graph data."},
+    {"skill": "Node.js", "priority": 0.82, "reason": "Most full-stack teams pair React with Node.js on the server — your backend is Python, so this is the missing half of the JavaScript stack."},
 ]
 
 # Career role definitions for gap analysis
@@ -150,5 +153,3 @@ CAREER_ROLES = {
         "nice_to_have": ["TensorFlow", "PyTorch", "Tableau", "Spark"],
     },
 }
-
-WHATIF_PYTORCH_DELTA = 16.0

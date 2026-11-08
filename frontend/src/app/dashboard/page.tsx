@@ -62,9 +62,9 @@ function DashboardContent() {
                 name: "Aryan Sharma",
                 username: "demo-user",
                 avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=demo",
-                target_role: "ML Engineer",
+                target_role: "Full Stack Developer",
             })
-            setTargetRole("ML Engineer")
+            setTargetRole("Full Stack Developer")
         }
 
         // Prevent hydration flash on mobile, close default insights
@@ -111,7 +111,7 @@ function DashboardContent() {
             try {
                 const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
                 const params = new URLSearchParams()
-                if (isDemo) params.set("target_role", "ML Engineer")
+                if (isDemo) params.set("target_role", "Full Stack Developer")
                 params.set("provider", useGraphStore.getState().analysisEngine)
                 const res = await fetch(`${apiUrl}/career/readiness?${params.toString()}`)
                 if (res.ok) {

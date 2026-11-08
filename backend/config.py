@@ -24,6 +24,7 @@ class Settings(BaseSettings):
     neo4j_password: str = ""
     jwt_secret: str = "changeme"
     demo_mode: bool = False
+    cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
 
     class Config:
         env_file = ".env"

@@ -53,7 +53,7 @@ export const syncGithubGraph = async (token: string) => {
     return res.data
 }
 
-export const analyzeRepo = async (url: string, provider: string = 'ollama') => {
+export const analyzeRepo = async (url: string, provider: string = 'openrouter') => {
     const res = await api.post('/graph/analyze-repo', { url, provider })
     return res.data
 }
