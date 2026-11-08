@@ -17,6 +17,9 @@ The frontend's Production and Preview `NEXT_PUBLIC_API_URL` points to the
 backend above. Render permits the exact production frontend origin. Demo mode
 is enabled and provider keys are unset. Public routes, CORS, demo seeding,
 readiness and profile generation/read were verified against these URLs.
+Desktop/mobile browser checks also passed for the landing page, populated
+graph and shared profile, with no page errors observed. See
+[IMPROVEMENT_REPORT.md](IMPROVEMENT_REPORT.md) for prioritized follow-up work.
 
 Render is connected to this repository and deploys backend changes from `main`.
 Vercel was deployed by CLI from a clean archive of the pushed commit. Its
