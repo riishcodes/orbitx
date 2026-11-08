@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: my-orbits-api
+    name: orbitx-new-api
     runtime: python
     plan: free
     rootDir: backend
